@@ -1,21 +1,23 @@
+# Virtual Environments
 venv/
-__pycache__/
-*.pyc
+env/
 
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Environment Variables
 .env
 
-.pytest_cache/
-
+# VS Code
 .vscode/
 
-.idea/
+# Pytest
+.pytest_cache/
 
-*.db
-
+# Coverage
 .coverage
-
 htmlcov/
 
+# macOS
 .DS_Store
-
-.env.local
