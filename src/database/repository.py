@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from .models import User, Project, Task
+from src.database.models import User, Project, Task
 
 
 class UserRepository:
@@ -8,11 +8,11 @@ class UserRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_user(self, email: str, hashed_password: str):
+    def create(self, email: str, hashed_password: str):
 
         user = User(
             email=email,
-            hashed_password=hashed_password
+            hashed_password=hashed_password,
         )
 
         self.db.add(user)
@@ -21,7 +21,7 @@ class UserRepository:
 
         return user
 
-    def get_user_by_email(self, email: str):
+    def get_by_email(self, email: str):
 
         return (
             self.db.query(User)
@@ -29,7 +29,7 @@ class UserRepository:
             .first()
         )
 
-    def get_user_by_id(self, user_id: int):
+    def get_by_id(self, user_id: int):
 
         return (
             self.db.query(User)
@@ -43,7 +43,7 @@ class ProjectRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_project(
+    def create(
         self,
         name: str,
         description: str,
@@ -62,7 +62,10 @@ class ProjectRepository:
 
         return project
 
-    def get_projects_by_owner(self, owner_id: int):
+    def get_all_by_owner(
+        self,
+        owner_id: int,
+    ):
 
         return (
             self.db.query(Project)
@@ -70,7 +73,10 @@ class ProjectRepository:
             .all()
         )
 
-    def get_project_by_id(self, project_id: int):
+    def get_by_id(
+        self,
+        project_id: int,
+    ):
 
         return (
             self.db.query(Project)
@@ -78,22 +84,10 @@ class ProjectRepository:
             .first()
         )
 
-    def update_project(
+    def delete(
         self,
         project: Project,
-        name: str,
-        description: str,
     ):
-
-        project.name = name
-        project.description = description
-
-        self.db.commit()
-        self.db.refresh(project)
-
-        return project
-
-    def delete_project(self, project: Project):
 
         self.db.delete(project)
         self.db.commit()
@@ -104,18 +98,20 @@ class TaskRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_task(
+    def create(
         self,
-        title: str,
-        description: str,
+        title,
+        description,
         status,
-        project_id: int,
+        due_date,
+        project_id,
     ):
 
         task = Task(
             title=title,
             description=description,
             status=status,
+            due_date=due_date,
             project_id=project_id,
         )
 
@@ -125,15 +121,10 @@ class TaskRepository:
 
         return task
 
-    def get_tasks_by_project(self, project_id: int):
-
-        return (
-            self.db.query(Task)
-            .filter(Task.project_id == project_id)
-            .all()
-        )
-
-    def get_task_by_id(self, task_id: int):
+    def get_by_id(
+        self,
+        task_id,
+    ):
 
         return (
             self.db.query(Task)
@@ -141,24 +132,21 @@ class TaskRepository:
             .first()
         )
 
-    def update_task(
+    def get_by_project(
         self,
-        task: Task,
-        title: str,
-        description: str,
-        status,
+        project_id,
     ):
 
-        task.title = title
-        task.description = description
-        task.status = status
+        return (
+            self.db.query(Task)
+            .filter(Task.project_id == project_id)
+            .all()
+        )
 
-        self.db.commit()
-        self.db.refresh(task)
-
-        return task
-
-    def delete_task(self, task: Task):
+    def delete(
+        self,
+        task: Task,
+    ):
 
         self.db.delete(task)
         self.db.commit()
