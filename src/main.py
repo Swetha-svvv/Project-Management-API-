@@ -1,18 +1,29 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
+import src.database.models
 from src.api.auth import router as auth_router
+from src.api.users import router as users_router
+from src.api.projects import router as projects_router
 from src.database.database import Base, engine
 
-import src.database.models
 
-Base.metadata.create_all(bind=engine)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    yield
+
 
 app = FastAPI(
     title="Project Management API",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.include_router(auth_router)
+app.include_router(users_router)
+app.include_router(projects_router)
 
 
 @app.get("/")

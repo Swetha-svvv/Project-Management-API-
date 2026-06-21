@@ -17,9 +17,8 @@ pwd_context = CryptContext(
 )
 
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/api/auth/login"
+    tokenUrl="/api/auth/token"
 )
-
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)

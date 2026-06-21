@@ -8,8 +8,11 @@ class UserRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, email: str, hashed_password: str):
-
+    def create_user(
+        self,
+        email: str,
+        hashed_password: str,
+    ):
         user = User(
             email=email,
             hashed_password=hashed_password,
@@ -21,16 +24,20 @@ class UserRepository:
 
         return user
 
-    def get_by_email(self, email: str):
-
+    def get_user_by_email(
+        self,
+        email: str,
+    ):
         return (
             self.db.query(User)
             .filter(User.email == email)
             .first()
         )
 
-    def get_by_id(self, user_id: int):
-
+    def get_user_by_id(
+        self,
+        user_id: int,
+    ):
         return (
             self.db.query(User)
             .filter(User.id == user_id)
@@ -43,13 +50,12 @@ class ProjectRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(
+    def create_project(
         self,
         name: str,
         description: str,
         owner_id: int,
     ):
-
         project = Project(
             name=name,
             description=description,
@@ -62,51 +68,60 @@ class ProjectRepository:
 
         return project
 
-    def get_all_by_owner(
+    def get_projects_by_owner(
         self,
         owner_id: int,
     ):
-
         return (
             self.db.query(Project)
             .filter(Project.owner_id == owner_id)
             .all()
         )
 
-    def get_by_id(
+    def get_project_by_id(
         self,
         project_id: int,
     ):
-
         return (
             self.db.query(Project)
             .filter(Project.id == project_id)
             .first()
         )
 
-    def delete(
+    def delete_project(
         self,
         project: Project,
     ):
-
         self.db.delete(project)
         self.db.commit()
 
+    def update_project(
+    self,
+    project: Project,
+    name: str,
+    description: str | None,
+):
+        project.name = name
+        project.description = description
+
+        self.db.commit()
+        self.db.refresh(project)
+
+        return project
 
 class TaskRepository:
 
     def __init__(self, db: Session):
         self.db = db
 
-    def create(
+    def create_task(
         self,
-        title,
-        description,
-        status,
+        title: str,
+        description: str,
+        status: str,
         due_date,
-        project_id,
+        project_id: int,
     ):
-
         task = Task(
             title=title,
             description=description,
@@ -121,32 +136,29 @@ class TaskRepository:
 
         return task
 
-    def get_by_id(
+    def get_task_by_id(
         self,
-        task_id,
+        task_id: int,
     ):
-
         return (
             self.db.query(Task)
             .filter(Task.id == task_id)
             .first()
         )
 
-    def get_by_project(
+    def get_tasks_by_project(
         self,
-        project_id,
+        project_id: int,
     ):
-
         return (
             self.db.query(Task)
             .filter(Task.project_id == project_id)
             .all()
         )
 
-    def delete(
+    def delete_task(
         self,
         task: Task,
     ):
-
         self.db.delete(task)
         self.db.commit()

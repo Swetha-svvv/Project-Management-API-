@@ -12,20 +12,20 @@ class AuthService:
         self.repository = repository
 
     def register(self, email: str, password: str):
-        existing_user = self.repository.get_by_email(email)
+        existing_user = self.repository.get_user_by_email(email)
 
         if existing_user:
             bad_request("Email already registered.")
 
         hashed_password = hash_password(password)
 
-        return self.repository.create(
+        return self.repository.create_user(
             email=email,
             hashed_password=hashed_password,
         )
 
     def login(self, email: str, password: str):
-        user = self.repository.get_by_email(email)
+        user = self.repository.get_user_by_email(email)
 
         if user is None:
             unauthorized("Invalid email or password.")
