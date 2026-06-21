@@ -145,6 +145,24 @@ class TaskRepository:
             .filter(Task.id == task_id)
             .first()
         )
+    
+    def update_task(
+    self,
+    task: Task,
+    title: str,
+    description: str | None,
+    status: str,
+    due_date,
+):
+        task.title = title
+        task.description = description
+        task.status = status
+        task.due_date = due_date
+
+        self.db.commit()
+        self.db.refresh(task)
+
+        return task
 
     def get_tasks_by_project(
         self,
