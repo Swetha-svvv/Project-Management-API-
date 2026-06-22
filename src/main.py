@@ -9,11 +9,13 @@ from src.api.projects import router as projects_router
 from src.database.database import Base, engine
 from src.api.tasks import router as tasks_router
 
+from src.database.seed import seed_database
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    seed_database()
     yield
-
 
 app = FastAPI(
     title="Project Management API",

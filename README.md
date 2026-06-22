@@ -29,6 +29,24 @@ A RESTful **Project Management API** built with **FastAPI**, **PostgreSQL**, **S
 * Update Task
 * Delete Task
 
+### 🐳 DevOps
+- Docker Support
+- Docker Compose Configuration
+- Environment Variable Configuration
+- PostgreSQL Database
+
+### 🌱 Database
+- Automatic Database Seeding
+- Demo User and Project Creation
+
+### 🧪 Testing
+- Unit Tests (Pytest)
+- Integration Tests (Pytest)
+- 22 Automated Tests Passed
+
+### 📖 API Documentation
+- Interactive Swagger UI
+- OpenAPI Documentation
 ---
 
 ## 🛠️ Tech Stack
@@ -42,6 +60,7 @@ A RESTful **Project Management API** built with **FastAPI**, **PostgreSQL**, **S
 | Validation        | Pydantic               |
 | API Documentation | Swagger UI (OpenAPI)   |
 | Containerization  | Docker, Docker Compose |
+| Testing           | Pytest                 |
 | Server            | Uvicorn                |
 
 ---
@@ -53,19 +72,55 @@ project-management-api/
 │
 ├── src/
 │   ├── api/
+│   │   ├── auth.py
+│   │   ├── users.py
+│   │   ├── projects.py
+│   │   └── tasks.py
+│   │
 │   ├── core/
+│   │   ├── config.py
+│   │   ├── exceptions.py
+│   │   └── security.py
+│   │
 │   ├── database/
+│   │   ├── database.py
+│   │   ├── models.py
+│   │   ├── repository.py
+│   │   └── seed.py
+│   │
 │   ├── schemas/
+│   │   ├── auth.py
+│   │   ├── project.py
+│   │   ├── task.py
+│   │   └── user.py
+│   │
 │   ├── services/
+│   │   ├── auth_service.py
+│   │   ├── project_service.py
+│   │   └── task_service.py
+│   │
 │   └── main.py
 │
+├── tests/
+│   ├── integration/
+│   │   └── test_api.py
+│   │
+│   ├── unit/
+│   │   ├── test_auth.py
+│   │   ├── test_projects.py
+│   │   └── test_tasks.py
+│   │
+│   └── conftest.py
+│
 ├── screenshots/
+│
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
+├── pytest.ini
 ├── .env.example
-├── README.md
-└── .gitignore
+├── .gitignore
+└── README.md
 ```
 
 ---
@@ -171,7 +226,11 @@ Workflow:
 
 ## 🧪 API Testing
 
-All endpoints have been tested successfully using **Swagger UI**.
+All endpoints have been tested using:
+
+- Swagger UI (Manual API Testing)
+- Pytest (Unit Tests)
+- Pytest (Integration Tests)
 
 The project includes testing screenshots inside the `screenshots/` directory.
 
@@ -212,7 +271,37 @@ screenshots/
 
 ✅ Swagger API Documentation
 
+✅ Unit Testing
+
+✅ Integration Testing
 ---
+## 🧪 Testing
+
+This project includes automated tests using **Pytest**.
+
+### Unit Tests
+- Authentication Service
+- Project Service
+- Task Service
+
+### Integration Tests
+- API endpoint testing using FastAPI TestClient
+
+Run all tests:
+
+```bash
+pytest -v
+```
+
+Generate a coverage report:
+
+```bash
+pytest --cov=src
+```
+
+Current Status:
+
+- ✅ 22 Tests Passed
 
 ## 👩‍💻 Author
 
